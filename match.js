@@ -76,14 +76,22 @@ const matchReducer = (state = initialState, action) => {
   } else if (action.type === DECREMENT) {
     const decrementState = state.map((item) => {
       if (item.id === action.payload.id) {
-        return {
-          ...item,
-          score: item.score - Number(action.payload.value),
-        };
+        if (item.score >= action.payload.value) {
+          return {
+            ...item,
+            score: item.score - Number(action.payload.value),
+          };
+        } else {
+          alert(
+            `Your Value ${action.payload.value} is greater than Match ${item.id} : Score ${item.score}`
+          );
+          return item;
+        }
       } else {
         return item;
       }
     });
+
     return decrementState;
   } else if (action.type === RESET) {
     const resetScore = state.map((item) => {
